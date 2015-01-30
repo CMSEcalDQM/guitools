@@ -38,35 +38,35 @@ targetDir = options.targetDir
 
 #### BEGIN path definitions / utility functions ####
 
-from DQM.EcalBarrelMonitorTasks.ClusterTask_cfi import ecalClusterTask
-from DQM.EcalBarrelMonitorTasks.EnergyTask_cfi import ecalEnergyTask
-from DQM.EcalBarrelMonitorTasks.IntegrityTask_cfi import ecalIntegrityTask
-from DQM.EcalBarrelMonitorTasks.LaserTask_cfi import ecalLaserTask
-from DQM.EcalBarrelMonitorTasks.LedTask_cfi import ecalLedTask
-from DQM.EcalBarrelMonitorTasks.OccupancyTask_cfi import ecalOccupancyTask
-from DQM.EcalBarrelMonitorTasks.PedestalTask_cfi import ecalPedestalTask
-from DQM.EcalBarrelMonitorTasks.PNDiodeTask_cfi import ecalPnDiodeTask
-from DQM.EcalBarrelMonitorTasks.PresampleTask_cfi import ecalPresampleTask
-from DQM.EcalBarrelMonitorTasks.RawDataTask_cfi import ecalRawDataTask
-from DQM.EcalBarrelMonitorTasks.SelectiveReadoutTask_cfi import ecalSelectiveReadoutTask
-from DQM.EcalBarrelMonitorTasks.TestPulseTask_cfi import ecalTestPulseTask
-from DQM.EcalBarrelMonitorTasks.TimingTask_cfi import ecalTimingTask
-from DQM.EcalBarrelMonitorTasks.TrigPrimTask_cfi import ecalTrigPrimTask
+from DQM.EcalMonitorTasks.ClusterTask_cfi import ecalClusterTask
+from DQM.EcalMonitorTasks.EnergyTask_cfi import ecalEnergyTask
+from DQM.EcalMonitorTasks.IntegrityTask_cfi import ecalIntegrityTask
+from DQM.EcalMonitorTasks.LaserTask_cfi import ecalLaserTask
+from DQM.EcalMonitorTasks.LedTask_cfi import ecalLedTask
+from DQM.EcalMonitorTasks.OccupancyTask_cfi import ecalOccupancyTask
+from DQM.EcalMonitorTasks.PedestalTask_cfi import ecalPedestalTask
+from DQM.EcalMonitorTasks.PNDiodeTask_cfi import ecalPnDiodeTask
+from DQM.EcalMonitorTasks.PresampleTask_cfi import ecalPresampleTask
+from DQM.EcalMonitorTasks.RawDataTask_cfi import ecalRawDataTask
+from DQM.EcalMonitorTasks.SelectiveReadoutTask_cfi import ecalSelectiveReadoutTask
+from DQM.EcalMonitorTasks.TestPulseTask_cfi import ecalTestPulseTask
+from DQM.EcalMonitorTasks.TimingTask_cfi import ecalTimingTask
+from DQM.EcalMonitorTasks.TrigPrimTask_cfi import ecalTrigPrimTask
 
-from DQM.EcalBarrelMonitorClient.IntegrityClient_cfi import ecalIntegrityClient
-from DQM.EcalBarrelMonitorClient.LaserClient_cfi import ecalLaserClient
-from DQM.EcalBarrelMonitorClient.LedClient_cfi import ecalLedClient
-from DQM.EcalBarrelMonitorClient.OccupancyClient_cfi import ecalOccupancyClient
-from DQM.EcalBarrelMonitorClient.PedestalClient_cfi import ecalPedestalClient
-from DQM.EcalBarrelMonitorClient.PNIntegrityClient_cfi import ecalPnIntegrityClient
-from DQM.EcalBarrelMonitorClient.PresampleClient_cfi import ecalPresampleClient
-from DQM.EcalBarrelMonitorClient.RawDataClient_cfi import ecalRawDataClient
-from DQM.EcalBarrelMonitorClient.SelectiveReadoutClient_cfi import ecalSelectiveReadoutClient
-from DQM.EcalBarrelMonitorClient.SummaryClient_cfi import ecalSummaryClient
-from DQM.EcalBarrelMonitorClient.TestPulseClient_cfi import ecalTestPulseClient
-from DQM.EcalBarrelMonitorClient.TimingClient_cfi import ecalTimingClient
-from DQM.EcalBarrelMonitorClient.TrigPrimClient_cfi import ecalTrigPrimClient
-from DQM.EcalBarrelMonitorClient.CalibrationSummaryClient_cfi import ecalCalibrationSummaryClient
+from DQM.EcalMonitorClient.IntegrityClient_cfi import ecalIntegrityClient
+from DQM.EcalMonitorClient.LaserClient_cfi import ecalLaserClient
+from DQM.EcalMonitorClient.LedClient_cfi import ecalLedClient
+from DQM.EcalMonitorClient.OccupancyClient_cfi import ecalOccupancyClient
+from DQM.EcalMonitorClient.PedestalClient_cfi import ecalPedestalClient
+from DQM.EcalMonitorClient.PNIntegrityClient_cfi import ecalPnIntegrityClient
+from DQM.EcalMonitorClient.PresampleClient_cfi import ecalPresampleClient
+from DQM.EcalMonitorClient.RawDataClient_cfi import ecalRawDataClient
+from DQM.EcalMonitorClient.SelectiveReadoutClient_cfi import ecalSelectiveReadoutClient
+from DQM.EcalMonitorClient.SummaryClient_cfi import ecalSummaryClient
+from DQM.EcalMonitorClient.TestPulseClient_cfi import ecalTestPulseClient
+from DQM.EcalMonitorClient.TimingClient_cfi import ecalTimingClient
+from DQM.EcalMonitorClient.TrigPrimClient_cfi import ecalTrigPrimClient
+from DQM.EcalMonitorClient.CalibrationSummaryClient_cfi import ecalCalibrationSummaryClient
 
 clusterTask = ecalClusterTask.MEs
 energyTask = ecalEnergyTask.MEs
