@@ -45,7 +45,7 @@ from DQM.EcalMonitorTasks.LaserTask_cfi import ecalLaserTask
 from DQM.EcalMonitorTasks.LedTask_cfi import ecalLedTask
 from DQM.EcalMonitorTasks.OccupancyTask_cfi import ecalOccupancyTask
 from DQM.EcalMonitorTasks.PedestalTask_cfi import ecalPedestalTask
-from DQM.EcalMonitorTasks.PNDiodeTask_cfi import ecalPnDiodeTask
+from DQM.EcalMonitorTasks.PNDiodeTask_cfi import ecalPNDiodeTask
 from DQM.EcalMonitorTasks.PresampleTask_cfi import ecalPresampleTask
 from DQM.EcalMonitorTasks.RawDataTask_cfi import ecalRawDataTask
 from DQM.EcalMonitorTasks.SelectiveReadoutTask_cfi import ecalSelectiveReadoutTask
@@ -58,7 +58,7 @@ from DQM.EcalMonitorClient.LaserClient_cfi import ecalLaserClient
 from DQM.EcalMonitorClient.LedClient_cfi import ecalLedClient
 from DQM.EcalMonitorClient.OccupancyClient_cfi import ecalOccupancyClient
 from DQM.EcalMonitorClient.PedestalClient_cfi import ecalPedestalClient
-from DQM.EcalMonitorClient.PNIntegrityClient_cfi import ecalPnIntegrityClient
+from DQM.EcalMonitorClient.PNIntegrityClient_cfi import ecalPNIntegrityClient
 from DQM.EcalMonitorClient.PresampleClient_cfi import ecalPresampleClient
 from DQM.EcalMonitorClient.RawDataClient_cfi import ecalRawDataClient
 from DQM.EcalMonitorClient.SelectiveReadoutClient_cfi import ecalSelectiveReadoutClient
@@ -75,7 +75,7 @@ laserTask = ecalLaserTask.MEs
 ledTask = ecalLedTask.MEs
 occupancyTask = ecalOccupancyTask.MEs
 pedestalTask = ecalPedestalTask.MEs
-pnDiodeTask = ecalPnDiodeTask.MEs
+pnDiodeTask = ecalPNDiodeTask.MEs
 presampleTask = ecalPresampleTask.MEs
 rawDataTask = ecalRawDataTask.MEs
 selectiveReadoutTask = ecalSelectiveReadoutTask.MEs
@@ -87,7 +87,7 @@ laserClient = ecalLaserClient.MEs
 ledClient = ecalLedClient.MEs
 occupancyClient = ecalOccupancyClient.MEs
 pedestalClient = ecalPedestalClient.MEs
-pnIntegrityClient = ecalPnIntegrityClient.MEs
+pnIntegrityClient = ecalPNIntegrityClient.MEs
 presampleClient = ecalPresampleClient.MEs
 rawDataClient = ecalRawDataClient.MEs
 selectiveReadoutClient = ecalSelectiveReadoutClient.MEs
@@ -428,7 +428,7 @@ layouts['ecal-layouts'].get("Raw Data").append([
     ecal2P('Integrity Errors in this LS', integrityTask.ByLumi), #online
     single('Error Trends', rawDataTask.TrendNSyncErrors, integrityTask.TrendNErrors), #online
     ecal2P('Event Type', rawDataTask.EventTypePreCalib, rawDataTask.EventTypeCalib, rawDataTask.EventTypePostCalib),
-    ecal2P('FED Entries', rawDataTask.Entries),
+    ecal2P('FED Entries', occupancyTask.DCC),
     LayoutDir('Desync Errors', [
         ecal2P('CRC', rawDataTask.CRC),
         ecal2P('DCC-GT Mismatch', rawDataTask.RunNumber, rawDataTask.Orbit),
@@ -817,7 +817,7 @@ layouts['ecal_T0_layouts'].remove('By SuperModule/%(sm)s/Led')
 #### BEGIN ecal_overview_layouts ####
 
 layouts['ecal_overview_layouts'] = LayoutDir("Collisions/EcalFeedBack", [
-    ecal2P("Single Event Timing", timingTask.TimeAll),
+    ecal3P("Single Event Timing", timingTask.TimeAll),
     eb("Forward-Backward EB", timingClient.FwdBkwdDiff, timingClient.FwdvBkwd),
     ee("Forward-Backward EE", timingClient.FwdBkwdDiff, timingClient.FwdvBkwd),
 ])
