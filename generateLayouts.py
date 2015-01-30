@@ -45,7 +45,7 @@ from DQM.EcalBarrelMonitorTasks.LaserTask_cfi import ecalLaserTask
 from DQM.EcalBarrelMonitorTasks.LedTask_cfi import ecalLedTask
 from DQM.EcalBarrelMonitorTasks.OccupancyTask_cfi import ecalOccupancyTask
 from DQM.EcalBarrelMonitorTasks.PedestalTask_cfi import ecalPedestalTask
-from DQM.EcalBarrelMonitorTasks.PNDiodeTask_cfi import ecalPnDiodeTask
+from DQM.EcalBarrelMonitorTasks.PNDiodeTask_cfi import ecalPNDiodeTask
 from DQM.EcalBarrelMonitorTasks.PresampleTask_cfi import ecalPresampleTask
 from DQM.EcalBarrelMonitorTasks.RawDataTask_cfi import ecalRawDataTask
 from DQM.EcalBarrelMonitorTasks.SelectiveReadoutTask_cfi import ecalSelectiveReadoutTask
@@ -58,7 +58,7 @@ from DQM.EcalBarrelMonitorClient.LaserClient_cfi import ecalLaserClient
 from DQM.EcalBarrelMonitorClient.LedClient_cfi import ecalLedClient
 from DQM.EcalBarrelMonitorClient.OccupancyClient_cfi import ecalOccupancyClient
 from DQM.EcalBarrelMonitorClient.PedestalClient_cfi import ecalPedestalClient
-from DQM.EcalBarrelMonitorClient.PNIntegrityClient_cfi import ecalPnIntegrityClient
+from DQM.EcalBarrelMonitorClient.PNIntegrityClient_cfi import ecalPNIntegrityClient
 from DQM.EcalBarrelMonitorClient.PresampleClient_cfi import ecalPresampleClient
 from DQM.EcalBarrelMonitorClient.RawDataClient_cfi import ecalRawDataClient
 from DQM.EcalBarrelMonitorClient.SelectiveReadoutClient_cfi import ecalSelectiveReadoutClient
@@ -75,7 +75,7 @@ laserTask = ecalLaserTask.MEs
 ledTask = ecalLedTask.MEs
 occupancyTask = ecalOccupancyTask.MEs
 pedestalTask = ecalPedestalTask.MEs
-pnDiodeTask = ecalPnDiodeTask.MEs
+pnDiodeTask = ecalPNDiodeTask.MEs
 presampleTask = ecalPresampleTask.MEs
 rawDataTask = ecalRawDataTask.MEs
 selectiveReadoutTask = ecalSelectiveReadoutTask.MEs
@@ -87,7 +87,7 @@ laserClient = ecalLaserClient.MEs
 ledClient = ecalLedClient.MEs
 occupancyClient = ecalOccupancyClient.MEs
 pedestalClient = ecalPedestalClient.MEs
-pnIntegrityClient = ecalPnIntegrityClient.MEs
+pnIntegrityClient = ecalPNIntegrityClient.MEs
 presampleClient = ecalPresampleClient.MEs
 rawDataClient = ecalRawDataClient.MEs
 selectiveReadoutClient = ecalSelectiveReadoutClient.MEs
@@ -109,9 +109,9 @@ smNamesEB = [
 
 smMEMNamesEE = ["EE-02", "EE-03", "EE-07", "EE-08", "EE+02", "EE+03", "EE+07", "EE+08"]
 
-laserWavelengths = ['1', '2', '3', '4']
+laserWavelengths = ['2', '3', '4']
 
-laserNames = ['(Quantronics)', '(Green)', '(Photonics)', '(IR)']
+laserNames = ['Green', 'Photonics', 'IR']
 
 ledWavelengths = ['1', '2']
 
@@ -121,10 +121,12 @@ mgpaGains = ['12']
 pnMGPAGainsFull = ['01', '16']
 pnMGPAGains = ['16']
 
-ebRep = {'subdet': 'EcalBarrel', 'prefix': 'EB', 'suffix': ''}
-eeRep = {'subdet': 'EcalEndcap', 'prefix': 'EE'}
-eemRep = {'subdet': 'EcalEndcap', 'prefix': 'EE', 'suffix': ' EE -'}
-eepRep = {'subdet': 'EcalEndcap', 'prefix': 'EE', 'suffix': ' EE +'}
+triggers = ['ECAL', 'HCAL', 'CSC', 'DT', 'RPC']
+
+ebRep = {'subdet': 'EcalBarrel', 'prefix': 'EB', 'suffix': '', 'supercrystal': 'trigger tower', 'subdetshort': 'EB', 'subdetshortsig': 'EB'}
+eeRep = {'subdet': 'EcalEndcap', 'prefix': 'EE', 'supercrystal': 'super crystal', 'subdetshort': 'EE', 'subdetshortsig': 'EE'}
+eemRep = {'subdet': 'EcalEndcap', 'prefix': 'EE', 'suffix': ' EE -', 'supercrystal': 'super crystal', 'subdetshort': 'EE', 'subdetshortsig': 'EEM'}
+eepRep = {'subdet': 'EcalEndcap', 'prefix': 'EE', 'suffix': ' EE +', 'supercrystal': 'super crystal', 'subdetshort': 'EE', 'subdetshortsig': 'EEP'}
 
 def formRep(rep, setRep):
     for key, value in setRep.items():
@@ -327,11 +329,18 @@ def smMEMSet(name, *mes) :
     return eeSMMEMSet(name, *mes) + ebSMSet(name, *mes)
 
 def subdetEtaPhi(name, me, meEta, mePhi) :
-    elems = [
-        LayoutElem(name + " EB", [[(me.path.value() % ebRep, me.description.value() % ebRep)], [(meEta.path.value() % ebRep, meEta.description.value() % ebRep), (mePhi.path.value() % ebRep, mePhi.description.value() % ebRep)]]),
-        LayoutElem(name + " EE -", [[(me.path.value() % eemRep, me.description.value() % eemRep)], [(meEta.path.value() % eemRep, meEta.description.value() % eemRep), (mePhi.path.value() % eemRep, mePhi.description.value() % eemRep)]]),
-        LayoutElem(name + " EE +", [[(me.path.value() % eepRep, me.description.value() % eepRep)], [(meEta.path.value() % eepRep, meEta.description.value() % eepRep), (mePhi.path.value() % eepRep, mePhi.description.value() % eepRep)]])
-    ]
+    if me:
+        elems = [
+            LayoutElem(name + " EB", [[(me.path.value() % ebRep, me.description.value() % ebRep)], [(meEta.path.value() % ebRep, meEta.description.value() % ebRep), (mePhi.path.value() % ebRep, mePhi.description.value() % ebRep)]]),
+            LayoutElem(name + " EE -", [[(me.path.value() % eemRep, me.description.value() % eemRep)], [(meEta.path.value() % eemRep, meEta.description.value() % eemRep), (mePhi.path.value() % eemRep, mePhi.description.value() % eemRep)]]),
+            LayoutElem(name + " EE +", [[(me.path.value() % eepRep, me.description.value() % eepRep)], [(meEta.path.value() % eepRep, meEta.description.value() % eepRep), (mePhi.path.value() % eepRep, mePhi.description.value() % eepRep)]])
+        ]
+    else:
+        elems = [
+            LayoutElem(name + " EB", [[(meEta.path.value() % ebRep, meEta.description.value() % ebRep)], [(mePhi.path.value() % ebRep, mePhi.description.value() % ebRep)]]),
+            LayoutElem(name + " EE -", [[(meEta.path.value() % eemRep, meEta.description.value() % eemRep)], [(mePhi.path.value() % eemRep, mePhi.description.value() % eemRep)]]),
+            LayoutElem(name + " EE +", [[(meEta.path.value() % eepRep, meEta.description.value() % eepRep)], [(mePhi.path.value() % eepRep, mePhi.description.value() % eepRep)]])
+        ]
 
     return elems
 
@@ -387,6 +396,7 @@ layouts['ecal-layouts'] = LayoutDir("Ecal/Layouts", [
     LayoutDir("Occupancy", [], addSerial = True),
     LayoutDir("Noise", [], addSerial = True),
     LayoutDir("Energy", [], addSerial = True),
+    LayoutDir("Clusters", [], addSerial = True),
     LayoutDir("Timing", [], addSerial = True),
     LayoutDir("Trigger Primitives", [], addSerial = True),
     LayoutDir("Selective Readout", [], addSerial = True),
@@ -408,7 +418,7 @@ layouts['ecal-layouts'].get('Overview').append([
     ecal3P('Timing', timingClient.QualitySummary),
     ecal3P('Trigger Primitives', trigPrimClient.EmulQualitySummary),
     ecal3P('Hot Cells', occupancyClient.QualitySummary),
-    ecal3P('Laser %(wl)s %(lname)s', laserClient.QualitySummary, rep = {'wl': laserWavelengths, 'lname': laserNames}), #online
+    ecal3P('Laser %(wl)s (%(lname)s)', laserClient.QualitySummary, rep = {'wl': laserWavelengths, 'lname': laserNames}), #online
     ecal2P('Laser %(wl)s PN', laserClient.PNQualitySummary, rep = {'wl': laserWavelengths}), #online
     ecal3P('Test Pulse G%(gain)s', testPulseClient.QualitySummary, rep = {'gain': mgpaGains}), #online
     ecal2P('Test Pulse PN G%(pngain)s', testPulseClient.PNQualitySummary, rep = {'pngain': pnMGPAGains}), #online
@@ -428,7 +438,7 @@ layouts['ecal-layouts'].get("Raw Data").append([
     ecal2P('Integrity Errors in this LS', integrityTask.ByLumi), #online
     single('Error Trends', rawDataTask.TrendNSyncErrors, integrityTask.TrendNErrors), #online
     ecal2P('Event Type', rawDataTask.EventTypePreCalib, rawDataTask.EventTypeCalib, rawDataTask.EventTypePostCalib),
-    ecal2P('FED Entries', rawDataTask.Entries),
+    ecal2P('FED Entries', occupancyTask.DCC),
     LayoutDir('Desync Errors', [
         ecal2P('CRC', rawDataTask.CRC),
         ecal2P('DCC-GT Mismatch', rawDataTask.RunNumber, rawDataTask.Orbit),
@@ -458,7 +468,6 @@ layouts['ecal-layouts'].get("Occupancy").append([
     ecal2P('Multiplicity Trend', occupancyTask.TrendNDigi, occupancyTask.TrendNRecHitThr, occupancyTask.TrendNTPDigi), #online
     ecal2P('FED Total', occupancyTask.DigiDCC),
     ecal2P('Basic Cluster Multiplicity', clusterTask.BCNum),
-    ecal3P('Super Cluster Seed', clusterTask.SCSeedOccupancy),
     ecal2P('Super Cluster Multiplicity', clusterTask.SCNum),
     ecal3P('Single Crystal Cluster', clusterTask.SingleCrystalCluster),
     ecal2P('Cluster Multiplicity Trends', clusterTask.TrendNBC, clusterTask.TrendNSC), #online
@@ -497,33 +506,40 @@ layouts['ecal-layouts'].get("Noise").append([
 
 layouts['ecal-layouts'].get("Energy").append([
     ecal3P('RecHit Energy', energyTask.HitMapAll),
-    ecal3P('RecHit Energy Spectrum', energyTask.HitAll)
-])
-layouts['ecal-layouts'].get("Energy").append(
+    ecal3P('RecHit Energy Spectrum', energyTask.HitAll)] +
     subdetEtaPhi("Basic Cluster Energy", clusterTask.BCEMap, clusterTask.BCEMapProjEta, clusterTask.BCEMapProjPhi) +
-    subdetEtaPhi("Basic Cluster Size", clusterTask.BCSizeMap, clusterTask.BCSizeMapProjEta, clusterTask.BCSizeMapProjPhi)
-)
-layouts['ecal-layouts'].get("Energy").append([
-    ecal2P('Basic Cluster Energy', clusterTask.BCE),
-    ecal2P('Basic Cluster Size', clusterTask.BCSize),
-    ecal2P('Basic Cluster Size Trend', clusterTask.TrendBCSize), #online
+    [ecal2P('Basic Cluster Energy', clusterTask.BCE),
     ecal2P('Super Cluster Energy', clusterTask.SCE),
     ecal2P('Super Cluster Energy Low', clusterTask.SCELow),
     ecal2P('Super Cluster Seed Energy', clusterTask.SCSeedEnergy),
-    ecal2P('Super Cluster R9', clusterTask.SCR9),
-    ecal2P('Super Cluster Size', clusterTask.SCNBCs, clusterTask.SCNcrystals),
     ecal2P('Cluster Energy vs Seed Energy', clusterTask.SCClusterVsSeed),
     LayoutDir('By SuperModule', 
         smSet('RecHit', energyTask.HitMap, energyTask.Hit)
     )
-##     LayoutDir('DiClusterMass', [
-##         single('Pi0', clusterTask.Pi0),
-##         single('JPsi', clusterTask.JPsi),
-##         single('Z', clusterTask.Z),
-##         single('High Mass', clusterTask.HighMass)
-##     ])
 ])
 
+layouts['ecal-layouts'].get('Clusters').append([
+    ecal2P('Basic Cluster Multiplicity', clusterTask.BCNum),
+    ecal2P('Basic Cluster Multiplicity Trend', clusterTask.TrendNBC)] +
+    subdetEtaPhi('Basic Cluster Occupancy', clusterTask.BCOccupancy, clusterTask.BCOccupancyProjEta, clusterTask.BCOccupancyProjPhi) +
+    [ecal2P('Basic Cluster Energy', clusterTask.BCE)] +
+    subdetEtaPhi('Basic Cluster Energy', clusterTask.BCEMap, clusterTask.BCEMapProjEta, clusterTask.BCEMapProjPhi) +
+#    subdetEtaPhi('Basic Cluster Et', None, clusterTask.BCEtMapProjEta, clusterTask.BCEtMapProjPhi) +
+    [ecal2P('Basic Cluster Size', clusterTask.BCSize)] +
+    subdetEtaPhi('Basic Cluster Size', clusterTask.BCSizeMap, clusterTask.BCSizeMapProjEta, clusterTask.BCSizeMapProjPhi) +
+    [ecal2P('Basic Cluster Size Trend', clusterTask.TrendNBC),
+    ecal2P('Super Cluster Multiplicity', clusterTask.SCNum),
+    ecal2P('Super Cluster Multiplicity Trend', clusterTask.TrendNSC),
+    ecal3P('Super Cluster Seed Occupancy', clusterTask.SCSeedOccupancy),
+    ecal2P('Super Cluster Energy', clusterTask.SCE),
+    ecal2P('Super Cluster Energy Low', clusterTask.SCELow),
+    ecal2P('Super Cluster Seed Energy', clusterTask.SCSeedEnergy),
+    ecal2P('Cluster Energy vs Seed Energy', clusterTask.SCClusterVsSeed),
+    ecal2P('Super Cluster Size', clusterTask.SCNBCs, clusterTask.SCNcrystals),
+    ecal2P('Super Cluster R9', clusterTask.SCR9),
+    ecal3P('Single Crystal Cluster', clusterTask.SingleCrystalCluster)
+])
+    
 layouts['ecal-layouts'].get("Timing").append([
     ecal3P('Quality Summary', timingClient.QualitySummary),
     ecal3P('Mean', timingClient.MeanAll),
@@ -557,7 +573,7 @@ layouts['ecal-layouts'].get("Trigger Primitives").append([
     ecal3P('Non Single Timing', trigPrimClient.NonSingleSummary),
     ecal3P("Occupancy vs BX", trigPrimTask.OccVsBx),
     ecal3P("Et vs BX", trigPrimTask.EtVsBx),
-    ecal3P('Emululation Timing', trigPrimTask.EmulMaxIndex),
+    ecal3P('Emulation Timing', trigPrimTask.EmulMaxIndex),
     LayoutDir('By SuperModule', [
         LayoutDir('EmulMatching', smSet('Match', trigPrimTask.MatchedIndex)),
         LayoutDir('Et', smSet('TP Et', trigPrimTask.EtRealMap))
@@ -585,14 +601,13 @@ layouts['ecal-layouts'].get("Selective Readout").append([
 ])
 
 layouts['ecal-layouts'].get("Laser").append([
-    ecal3P("Quality Summary L%(wl)s %(lname)s", laserClient.QualitySummary, rep = {'wl': laserWavelengths, 'lname': laserNames}),
-    ecal3P('Amplitude L%(wl)s %(lname)s', laserTask.AmplitudeSummary, rep = {'wl': laserWavelengths, 'lname': laserNames}),
-    ecal2P('Amplitude RMS L%(wl)s %(lname)s', laserClient.AmplitudeRMS, rep = {'wl': laserWavelengths, 'lname': laserNames}),
+    ecal3P("Quality Summary L%(wl)s (%(lname)s)", laserClient.QualitySummary, rep = {'wl': laserWavelengths, 'lname': laserNames}),
+    ecal3P('Amplitude L%(wl)s (%(lname)s)', laserTask.AmplitudeSummary, rep = {'wl': laserWavelengths, 'lname': laserNames}),
+    ecal2P('Amplitude RMS L%(wl)s (%(lname)s)', laserClient.AmplitudeRMS, rep = {'wl': laserWavelengths, 'lname': laserNames}),
     ecal3P('Occupancy', laserTask.Occupancy),
-    ecal2P('Signal Rate L%(wl)s %(lname)s', laserTask.SignalRate, rep = {'wl': laserWavelengths, 'lname': laserNames}),
-    ecal2P('Timing Spread L%(wl)s %(lname)s', laserClient.TimingRMSMap, rep = {'wl': laserWavelengths, 'lname': laserNames}),
-    ecal2P('PN Quality Summary L%(wl)s %(lname)s', laserClient.PNQualitySummary, rep = {'wl': laserWavelengths, 'lname': laserNames}),
-    LayoutDirSet('Laser%(wl)s %(lname)s', [
+    ecal2P('Timing Spread L%(wl)s (%(lname)s)', laserClient.TimingRMSMap, rep = {'wl': laserWavelengths, 'lname': laserNames}),
+    ecal2P('PN Quality Summary L%(wl)s (%(lname)s)', laserClient.PNQualitySummary, rep = {'wl': laserWavelengths, 'lname': laserNames}),
+    LayoutDirSet('Laser%(wl)s (%(lname)s)', [
         LayoutDir('Quality', smSet('Quality', laserClient.Quality)),
         LayoutDir('Amplitude', smSet('Amplitude', laserTask.Amplitude, laserClient.AmplitudeMean)),
         LayoutDir('Timing', smSet('Timing', laserTask.Timing, laserClient.TimingMean, laserClient.TimingRMS)),
@@ -607,7 +622,6 @@ layouts['ecal-layouts'].get("Led").append([
     ee2P('Amplitude L%(wl)s', ledTask.AmplitudeSummary, rep = {'wl': ledWavelengths}),    
     single('Amplitude RMS L%(wl)s', ledClient.AmplitudeRMS, rep = {'wl': ledWavelengths}),
     ee2P('Occupancy', ledTask.Occupancy),
-    single('Signal Rate L%(wl)s', ledTask.SignalRate, rep = {'wl': ledWavelengths}),
     single('Timing Spread L%(wl)s', ledClient.TimingRMSMap, rep = {'wl': ledWavelengths}),
     single('PN Quality Summary L%(wl)s', ledClient.PNQualitySummary, rep = {'wl': ledWavelengths}),
     LayoutDirSet('Led%(wl)s', [
@@ -678,11 +692,11 @@ ebSMSet = LayoutDirSet("%(sm)s", [
     single("Timing Vs Amplitude", timingTask.TimeAmp),
     single("Trigger Primitives", trigPrimTask.EtRealMap, trigPrimTask.MatchedIndex),
     LayoutDir('Laser', [
-        single('Quality L%(wl)s %(lname)s', laserClient.Quality, rep = {'wl': laserWavelengths, 'lname': laserNames}),
-        single('Amplitude L%(wl)s %(lname)s', laserTask.Amplitude, laserClient.AmplitudeMean, rep = {'wl': laserWavelengths, 'lname': laserNames}),
-        single('Timing L%(wl)s %(lname)s', laserTask.Timing, laserClient.TimingMean, laserClient.TimingRMS, rep = {'wl': laserWavelengths, 'lname': laserNames}),
-        single('APD Over PN L%(wl)s %(lname)s', laserTask.AOverP, rep = {'wl': laserWavelengths, 'lname': laserNames}),
-        single('Shape L%(wl)s %(lname)s', laserTask.Shape, rep = {'wl': laserWavelengths, 'lname': laserNames})
+        single('Quality L%(wl)s (%(lname)s)', laserClient.Quality, rep = {'wl': laserWavelengths, 'lname': laserNames}),
+        single('Amplitude L%(wl)s (%(lname)s)', laserTask.Amplitude, laserClient.AmplitudeMean, rep = {'wl': laserWavelengths, 'lname': laserNames}),
+        single('Timing L%(wl)s (%(lname)s)', laserTask.Timing, laserClient.TimingMean, laserClient.TimingRMS, rep = {'wl': laserWavelengths, 'lname': laserNames}),
+        single('APD Over PN L%(wl)s (%(lname)s)', laserTask.AOverP, rep = {'wl': laserWavelengths, 'lname': laserNames}),
+        single('Shape L%(wl)s (%(lname)s)', laserTask.Shape, rep = {'wl': laserWavelengths, 'lname': laserNames})
     ]), #online
     LayoutDir('Test Pulse', [
         single('Quality G%(gain)s', testPulseClient.Quality, rep = {'gain': mgpaGains}),
@@ -783,8 +797,7 @@ layouts['ecal_T0_layouts'].remove('Laser')
 layouts['ecal_T0_layouts'].remove('Led')
 layouts['ecal_T0_layouts'].remove('Test Pulse')
 layouts['ecal_T0_layouts'].remove('Pedestal')
-layouts['ecal_T0_layouts'].remove('Trend')
-layouts['ecal_T0_layouts'].remove('Overview/Laser %(wl)s %(lname)s')
+layouts['ecal_T0_layouts'].remove('Overview/Laser %(wl)s (%(lname)s)')
 layouts['ecal_T0_layouts'].remove('Overview/Laser %(wl)s PN')
 layouts['ecal_T0_layouts'].remove('Overview/Test Pulse G%(gain)s')
 layouts['ecal_T0_layouts'].remove('Overview/Test Pulse PN G%(pngain)s')
@@ -812,12 +825,75 @@ layouts['ecal_T0_layouts'].remove('By SuperModule/%(sm)s/Test Pulse')
 layouts['ecal_T0_layouts'].remove('By SuperModule/%(sm)s/Pedestal')
 layouts['ecal_T0_layouts'].remove('By SuperModule/%(sm)s/Led')
 
+layouts['ecal_T0_layouts'].get('Clusters').append([
+    ecal2P('Super Cluster Size vs Energy', clusterTask.SCSizeVsEnergy),
+    ecal3P('Super Cluster Seed Occupancy (High E)', clusterTask.SCSeedOccupancyHighE),
+    ecal3P('Super Cluster Seed Occupancy (%(trig)s triggered)', clusterTask.SCSeedOccupancyTrig, rep = {'trig': triggers}),
+    ecal3P('Super Cluster Seed Time (%(trig)s exclusive triggered)', clusterTask.SCSeedTimeMapTrigEx, rep = {'trig': triggers}),
+    ecal2P('Super Cluster Eta', clusterTask.SCOccupancyProjEta),
+    ecal2P('Super Cluster Phi', clusterTask.SCOccupancyProjPhi),
+    LayoutElem('Super Cluster Swiss Cross', [
+        [[clusterTask.SCSwissCross.path.value()]]
+    ])
+])
+
+layouts['ecal_T0_layouts'].insert('By SuperModule',
+    LayoutDir('PileUpDep', [
+        LayoutElem('Number of vertices', [
+            [['OfflinePV/offlinePrimaryVertices/vtxNbr']]
+        ]),
+        LayoutElem('Sum RecHit Et', [
+            [['Ecal/EcalPileUpDepMonitor/recHitEtEB'], ['Ecal/EcalPileUpDepMonitor/recHitEtEE']],
+            [['Ecal/EcalPileUpDepMonitor/recHitEtEB_PV'], ['Ecal/EcalPileUpDepMonitor/recHitEtEE_PV']]
+        ]),
+        LayoutElem('Number of Basic Clusters', [
+            [[clusterTask.BCNum.path.value() % ebRep], [clusterTask.BCNum.path.value() % eeRep]],
+            [['Ecal/EcalPileUpDepMonitor/bcEB_PV'], ['Ecal/EcalPileUpDepMonitor/bcEE_PV']]
+        ]),
+        LayoutElem('Number of Super Clusters', [
+            [[clusterTask.SCNum.path.value() % ebRep], [clusterTask.SCNum.path.value() % eeRep]],
+            [['Ecal/EcalPileUpDepMonitor/scEB_PV'], ['Ecal/EcalPileUpDepMonitor/scEE_PV']]
+        ]),
+        LayoutElem('Super Cluster Et', [
+            [['Ecal/EcalPileUpDepMonitor/scHitEtEB'], ['Ecal/EcalPileUpDepMonitor/scHitEtEE']],
+            [['Ecal/EcalPileUpDepMonitor/scEtEB_PV'], ['Ecal/EcalPileUpDepMonitor/scEtEE_PV']]
+        ]),
+        LayoutElem('Electron EM Iso', [
+            [['Ecal/EcalPileUpDepMonitor/emIso']],
+            [['Ecal/EcalPileUpDepMonitor/emIso_PV']]
+        ]),
+    ], addSerial = True)
+)
+layouts['ecal_T0_layouts'].insert('By SuperModule',
+    LayoutDir('Cluster Validation', [
+#        ecal2P('Super Cluster Eta', clusterTask.SCOccupancyProjEta),
+        LayoutElem('Super Cluster Eta', [
+            [['Ecal/EcalPileUpDepMonitor/scEta_EB']],
+            [['Ecal/EcalPileUpDepMonitor/scEta_EE']]
+        ]),
+        ecal2P('Super Cluster Phi', clusterTask.SCOccupancyProjPhi),
+        LayoutElem('SigmaIetaIeta', [
+            [['Ecal/EcalPileUpDepMonitor/scSigmaIetaIeta_EB']],
+            [['Ecal/EcalPileUpDepMonitor/scSigmaIetaIeta_EE']]
+        ]),
+        LayoutElem('SigmaIetaIphi', [
+            [['Ecal/EcalPileUpDepMonitor/scSigmaIetaIphi_EB']],
+            [['Ecal/EcalPileUpDepMonitor/scSigmaIetaIphi_EE']]
+        ]),
+#        ecal2P('Super Cluster R9', clusterTask.SCR9)
+        LayoutElem('Super Cluster R9', [
+            [['Ecal/EcalPileUpDepMonitor/r9_EB']],
+            [['Ecal/EcalPileUpDepMonitor/r9_EE']]
+        ])
+    ], addSerial = True)
+)
+
 #### END ecal-layouts.py / ecal_T0_layouts.py / ecalpriv-layouts.py ####
 
 #### BEGIN ecal_overview_layouts ####
 
 layouts['ecal_overview_layouts'] = LayoutDir("Collisions/EcalFeedBack", [
-    ecal2P("Single Event Timing", timingTask.TimeAll),
+    ecal3P("Single Event Timing", timingTask.TimeAll),
     eb("Forward-Backward EB", timingClient.FwdBkwdDiff, timingClient.FwdvBkwd),
     ee("Forward-Backward EE", timingClient.FwdBkwdDiff, timingClient.FwdvBkwd),
 ])
