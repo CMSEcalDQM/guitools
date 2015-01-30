@@ -155,14 +155,18 @@ class LayoutElem(LayoutObj):
         for row in self.layoutSpecs_:
             columns = []
             for column in row:
-                if len(column) == 0:
-                    columns.append(None)
-                if len(column) == 1:
-                    columns.append({'path' : self._substitute(column[0])})
-                elif len(column) == 2:
-                    columns.append({'path' : self._substitute(column[0]), 'description' : self._substitute(column[1])})
-                else:
-                    columns.append({'path' : self._substitute(column[0]), 'description' : self._substitute(column[1]), 'draw' : column[2]})
+                try:
+                    if len(column) == 0:
+                        columns.append(None)
+                    if len(column) == 1:
+                        columns.append({'path' : self._substitute(column[0])})
+                    elif len(column) == 2:
+                        columns.append({'path' : self._substitute(column[0]), 'description' : self._substitute(column[1])})
+                    else:
+                        columns.append({'path' : self._substitute(column[0]), 'description' : self._substitute(column[1]), 'draw' : column[2]})
+                except TypeError:
+                    print column
+                    raise
 
             rows.append(columns)
         
